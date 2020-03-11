@@ -1,0 +1,32 @@
+language: python
+
+python:
+  - "3.6"
+
+jobs:
+  include:
+    # Check the plugin with kodi-addon-checker
+    - stage: kodi-addon-checker
+      script:
+        - pip install kodi-addon-checker
+        - kodi-addon-checker --branch krypton --allow-folder-id-mismatch ./resource.images.catchuptvandmore
+
+    # Update repository.catchuptvandmore
+    - stage: update-repo
+      script: 
+        - pip install gitpython
+        - git clone https://github.com/Catch-up-TV-and-More/repository.catchuptvandmore ../repo
+        - cd ../repo
+        - git config --global user.email "travis@travis-ci.org"
+        - git config --global user.name "Travis CI"
+        - git remote set-url origin https://${GH_TOKEN}@github.com/Catch-up-TV-and-More/repository.catchuptvandmore.git > /dev/null 2>&1
+        - ./update_all_repos.sh
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always
+
+env:
+  global:
+    secure: b0N/xJn1WAkb+sXz+whfCb/06rB/7fIUnRNE3aNvkxUH718sk/4astw1fephfgOq35/xXoYnHfgkCKNkOV/+1q+nnY/8vIi7y/SPLxTt33xXhXfWjMgJs6LcNC7Cf9kNMDA5F3H9WQp/mMCjwJhKzNpFojUtE96iKY5S43OBdmMKoQyuuh9bMYeCxA8A00vZjDZicbhGZBx48ToJOLgDSijspaaI/GwjBVLaxowuNPcHdvwJgr4lIMOkpjfuF5vWJo+aPhkoPXsxAqxHWRKDh5s48+Fsw116IFrRrsAksnseiYcoCl/r2/MFXaQKVvUTVhGo+Vi/6+Wu8sL1Zo0JbIPk+O7XwkbcWov/MJYL9x4qkoQe/QYFLe+jZtkHMqN5epgTWwNeZibRTraAIt+AMYca+ZvnE/+Wmizu59zzt448GUMWjeq3iCWzeuoLOhexzjCN6XRVHaZDMVri6qOJvbnklvLPW8RicZKYaKetRAr5go7AscRQlcFswbHauPsyxh4cd8v+fLf5lozfs3/32uWcc38afgPg4nVqK6SaXhFV0HhcDww1H8SAXaEaqkTlipFFN3xhKWWO5RBoTut3f5R5s8UobN52UrKnPnpTTR/gS5xw62oMXEqdJfwe+ibOdOndSNHMJuJrWpUbgZTaTxIc6M0H7TK3XVEOc4wM4Nc=
