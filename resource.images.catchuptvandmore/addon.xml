@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="resource.images.catchuptvandmore"
        name="Catch-up TV &amp; More channel logos and artwork"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="SylvainCecchetto,wwark">
   <requires>
     <import addon="kodi.resource" version="1.0.0"/>
@@ -23,6 +23,8 @@
 [Add] CRTV News channel logo
 [Version 1.0.2]
 [Fix] Fix error in addon.xml
+[Version 1.0.3]
+[Fix] Use same size for root and countries images
     </news>
     <assets>
       <icon>icon.png</icon>
