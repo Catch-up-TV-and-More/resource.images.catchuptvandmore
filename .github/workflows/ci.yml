@@ -1,0 +1,44 @@
+name: CI
+
+# Controls when the action will run.
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  
+  # Check the plugin with kodi-addon-checker
+  kodi-addon-checker:
+    name: Kodi-addon-checker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Run kodi-addon-checker
+        run: |
+          pip install kodi-addon-checker
+          kodi-addon-checker --branch krypton --allow-folder-id-mismatch ./resource.images.catchuptvandmore
+  
+  # Update repository.catchuptvandmore
+  update-repo:
+    name: Update repository.catchuptvandmore
+    needs: kodi-addon-checker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Update all repositories
+        run: |
+          pip install gitpython
+          git clone https://github.com/Catch-up-TV-and-More/repository.catchuptvandmore repo
+          cd repo
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github@noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Catch-up-TV-and-More/repository.catchuptvandmore.git
+          ./update_all_repos.sh
