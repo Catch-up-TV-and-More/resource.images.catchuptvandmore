@@ -40,5 +40,5 @@ jobs:
           cd repo
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github@noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Catch-up-TV-and-More/repository.catchuptvandmore.git
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_TOKEN }}@github.com/Catch-up-TV-and-More/repository.catchuptvandmore.git
           ./update_all_repos.sh
