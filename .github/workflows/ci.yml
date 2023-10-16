@@ -42,3 +42,26 @@ jobs:
           git config --global user.email 'github@noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.REPO_TOKEN }}@github.com/Catch-up-TV-and-More/repository.catchuptvandmore.git
           ./update_all_repos.sh
+
+  # Prepare and create addon submission pull request to official Kodi repo
+  kodi-addon-submitter:
+    runs-on: ubuntu-latest
+    name: Kodi addon submitter
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Generate distribution zip and submit to official kodi repository
+      id: kodi-addon-submitter
+      # https://github.com/xbmc/kodi-addon-submitter
+      uses: xbmc/action-kodi-addon-submitter@v1.3
+      with:
+        kodi-repository: repo-resources
+        kodi-version: krypton
+        addon-id: resource.images.catchuptvandmore
+        kodi-matrix: false
+        sub-directory: true
+      env:
+        GH_USERNAME: ${{ github.actor }}
+        # https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+        GH_TOKEN: ${{ secrets.REPO_TOKEN }}
+        EMAIL: ${{ secrets.EMAIL }}
