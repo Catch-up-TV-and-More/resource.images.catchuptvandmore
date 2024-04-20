@@ -1,7 +1,9 @@
 name: CI
 
 # Controls when the action will run.
-on: [workflow_dispatch, push]
+on: 
+  push:
+  workflow_dispatch:
     branches:
       - master
 
